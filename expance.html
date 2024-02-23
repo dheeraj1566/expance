@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="expance.css" />
+  </head>
+  <body>
+    <div id="wrapper">
+      <div id="information">
+        <div id="totalDiv">
+          <input
+            type="text"
+            placeholder="Enter Total Budget for this month"
+            id="total"
+          />
+        </div>
+
+        <div id="info">
+          <div>
+            <h3>Total: <span id="totalhead"></span></h3>
+          </div>
+
+          <div>
+            <h3>spent:<span id="spent"></span></h3>
+          </div>
+
+          <div>
+            <h3>remaining:<span id="remaining"></span></h3>
+          </div>
+        </div>
+      </div>
+
+      <div id="enterExpense">
+        <form action="" class="form">
+          <input
+            type="text"
+            placeholder="Expense Detail"
+            id="expensename"
+           /><br />
+          <input
+            type="text"
+            placeholder="Expense Amount"
+            id="expensamt"
+          /><br />
+          <button type="submit">Add Expense</button>
+        </form>
+      </div>
+
+      <div id="expenseTracker">
+        <table id="myTable">
+          <tr>
+            <th>S.No</th>
+            <th>Info</th>
+            <th>Amount</th>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <script>
+      let totalinp = document.querySelector("#total");
+      let totalhead = document.querySelector("#totalhead");
+      let totalspent = document.querySelector("#spent");
+      let totalremain = document.querySelector("#remaining");
+      let btnpart = document.querySelector("button");
+      let expensenme = document.querySelector("#expensename");
+      let expensenammt = document.querySelector("#expensamt");
+      let form = document.querySelector(".form");
+      let i = 0;
+
+      let information={};
+
+      function setdata(){
+        information.name=totalinp.value
+        totalinp.value=""
+        information.name=totalinp.value
+        totalinp.value=""
+      }
+
+     
+
+      btnpart.onclick=(information)=>{
+        setdata()
+        dkm()
+      }
+      function dkm(){
+        let userinformation = localStorage.getItem("userinformation");
+        let data =userinformation ? JSON.parse(userinformation):[];
+        data.push(information);
+        let dkm =JSON.stringify(data);
+        window.localStorage.setItem("userinformation",dkm); 
+      }
+      // console.log(information);
+
+
+
+      totalinp.addEventListener("blur", () => {
+        totalhead.innerHTML = totalinp.value;
+        totalremain.innerHTML = totalinp.value;
+      });
+      btnpart.addEventListener("click", (e) => {
+        e.preventDefault();
+        var table = document.getElementById("myTable");
+       
+        var row = table.insertRow(0);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        table.append(row);
+        cell1.innerHTML = ++i;
+        cell2.innerHTML = expensenme.value;
+        cell3.innerHTML = expensenammt.value;
+
+        totalspent.innerHTML =
+          Number(totalspent.innerHTML) + Number(expensenammt.value);
+        console.log(totalspent.innerHTML);
+        totalremain.innerHTML =
+          Number(totalremain.innerHTML) - Number(expensenammt.value);
+      });
+    </script>
+  </body>
+</html>
